@@ -11,17 +11,13 @@ import org.scribe.model.Verifier
 
 import scala.io.StdIn
 
-object FlickrAuthorization {
+object FlickrContext {
 
-  // auth needs to be set in the Flickr RequestContext every time it is used, as it is stored in a thread local ಠ_ಠ
-  case class FlickrContext(
-    flickr: Flickr,
-    auth: Auth
-  )
+  lazy val config = ConfigFactory.load("application.conf")
+  lazy val key = config.getString("flickr.api.authorization.key")
+  lazy val secret = config.getString("flickr.api.authorization.secret")
 
-  lazy val authConfig = ConfigFactory.load("authorization.conf")
-  lazy val key = authConfig.getString("flickr.api.authorization.key")
-  lazy val secret = authConfig.getString("flickr.api.authorization.secret")
+  lazy val directory = config.getString("flickr.save.location")
 
   lazy val flickr = new Flickr(key, secret, new REST())
   lazy val authInterface = flickr.getAuthInterface
@@ -50,6 +46,13 @@ object FlickrAuthorization {
       auth
     }
 
-    FlickrContext(flickr, flickRAuth)
+    FlickrContext(flickr, flickRAuth, directory)
   }
 }
+
+// auth needs to be set in the Flickr RequestContext every time it is used, as it is stored in a thread local ಠ_ಠ
+case class FlickrContext(
+  flickr: Flickr,
+  auth: Auth,
+  directory: String
+)

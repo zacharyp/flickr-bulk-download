@@ -1,16 +1,14 @@
 package org.zachary.flickr
 
 import akka.actor.Actor
-import akka.stream.{ActorMaterializer, ThrottleMode}
+import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{Sink, Source}
 import com.flickr4java.flickr.RequestContext
-import com.flickr4java.flickr.people.{PeopleInterface, User}
-import com.flickr4java.flickr.photos.{Photo, PhotoList, SearchParameters}
-import org.zachary.flickr.FlickrAuthorization.FlickrContext
+import com.flickr4java.flickr.people.User
+import com.flickr4java.flickr.photos.SearchParameters
 
 import scala.collection.JavaConverters._
 import scala.concurrent.Future
-import scala.concurrent.duration._
 
 object FlickrPhotoRetriever {
 
@@ -22,9 +20,7 @@ class FlickrPhotoRetriever(flickrContext: FlickrContext, implicit val actorMater
 
   import FlickrPhotoRetriever._
 
-  import context.dispatcher
-
-  lazy val photoSaver = new PhotoSaver
+  lazy val photoSaver = new PhotoSaver(flickrContext)
 
   private val pageSize = 100
 

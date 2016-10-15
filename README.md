@@ -1,7 +1,7 @@
 ##Download all the images from flickr for a user
 
 ### Setup
-To use this library, you will need a flickr api key (https://www.flickr.com/services/api/misc.api_keys.html).  Then, modify the file src/main/resource/authorization.conf with your key/secret:
+To use this library, you will need a flickr api key (https://www.flickr.com/services/api/misc.api_keys.html).  Then, modify the file src/main/resource/application.conf with your key/secret:
 
 ```
 flickr.api.authorization {
@@ -9,6 +9,13 @@ flickr.api.authorization {
   secret = "your-secret-here"
 }
 ```
+
+You should also change the directory path in which you want the photos to save:
+
+```
+flickr.save.location = "/Users/home/<insert-user-name-here>/Pictures/flickr-download"
+```
+
 
 ### Use
 

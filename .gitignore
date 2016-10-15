@@ -21,4 +21,4 @@ project/plugins/project/
 .idea/*
 *.iml
 
-src/main/resources/authorization.conf
+src/main/resources/application.conf

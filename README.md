@@ -2,7 +2,7 @@
 Downloads all images for a user, putting any images currently in a Set into a subdirectory named by the name of the Set
 
 ### Setup
-To use this library, you will need a flickr api key (https://www.flickr.com/services/api/misc.api_keys.html).  Then, modify the file src/main/resource/application.conf with your key/secret:
+To use this library, you will need a flickr api key (https://www.flickr.com/services/api/misc.api_keys.html).  Then, modify the file src/main/resources/application.conf with your key/secret:
 
 ```
 flickr.api.authorization {

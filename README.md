@@ -14,7 +14,7 @@ flickr.api.authorization {
 You should also change the directory path in which you want the photos to save:
 
 ```
-flickr.save.location = "/Users/home/<insert-user-name-here>/Pictures/flickr-download"
+flickr.save.location = "/Users/<insert-user-name-here>/Pictures/flickr-download"
 ```
 
 

@@ -14,7 +14,8 @@ class PhotoSaver()(implicit val actorMaterializer: ActorMaterializer) {
 
   def savePhoto(photo: FlickrPhoto): Future[FlickrPhoto] = {
 
-    println(s"${write(photo)}")
+    val photoJson: String = write(photo)
+    println(s"$photoJson")
 
     Future.successful(photo)
   }

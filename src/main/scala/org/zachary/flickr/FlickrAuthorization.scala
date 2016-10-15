@@ -3,6 +3,7 @@ package org.zachary.flickr
 import java.io.File
 
 import com.flickr4java.flickr.auth.{Auth, Permission}
+import com.flickr4java.flickr.people.PeopleInterface
 import com.flickr4java.flickr.util.FileAuthStore
 import com.flickr4java.flickr.{Flickr, REST}
 import com.typesafe.config.ConfigFactory

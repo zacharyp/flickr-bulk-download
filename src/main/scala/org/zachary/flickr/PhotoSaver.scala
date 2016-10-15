@@ -63,6 +63,8 @@ class PhotoSaver(flickrContext: FlickrContext)(implicit val actorM: ActorMateria
             photoAllContext.getPhotoSetList.asScala.map(s => s.getTitle).headOption.map(_ + "/").getOrElse("")
 
           try {
+            println(s"Starting writes for image: ${photo.id}")
+
             val inputStream: InputStream = photosInterface.getImageAsStream(p.photo, Size.ORIGINAL)
 
             val byteArray: Array[Byte] = IOUtils.toByteArray(inputStream)

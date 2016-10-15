@@ -19,6 +19,7 @@ object FlickrPhotoRetriever {
 class FlickrPhotoRetriever(flickrContext: FlickrContext, implicit val actorMaterializer: ActorMaterializer) extends Actor {
 
   import FlickrPhotoRetriever._
+  import context.dispatcher
 
   lazy val photoSaver = new PhotoSaver(flickrContext)
 

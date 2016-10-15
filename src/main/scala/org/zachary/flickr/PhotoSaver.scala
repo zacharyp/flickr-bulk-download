@@ -7,9 +7,9 @@ import org.json4s._
 import org.json4s.jackson.JsonMethods._
 import org.json4s.jackson.Serialization.write
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-class PhotoSaver(flickrContext: FlickrContext)(implicit val actorMaterializer: ActorMaterializer) {
+class PhotoSaver(flickrContext: FlickrContext)(implicit val actorM: ActorMaterializer, ec: ExecutionContext) {
 
   implicit val formats = DefaultFormats
 

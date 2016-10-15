@@ -26,7 +26,7 @@ object FlickrContext {
   lazy val authDir: String = System.getProperty("user.home") + File.separatorChar + ".flickrAuth"
   lazy val authStore = new FileAuthStore(new File(authDir))
 
-  def getFlickrContext: FlickrContext = {
+  def apply(): FlickrContext = {
 
     val url = authInterface.getAuthorizationUrl(authToken, Permission.DELETE)
 

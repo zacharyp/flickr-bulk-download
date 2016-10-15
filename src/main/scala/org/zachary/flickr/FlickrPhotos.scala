@@ -10,16 +10,16 @@ import com.flickr4java.flickr.photos.SearchParameters
 import scala.collection.JavaConverters._
 import scala.concurrent.Future
 
-object FlickrPhotoRetriever {
+object FlickrPhotos {
 
   case object RetrieveAll
 
 }
 
-class FlickrPhotoRetriever(flickrContext: FlickrContext, implicit val actorMaterializer: ActorMaterializer) extends Actor {
+class FlickrPhotos(flickrContext: FlickrContext, implicit val actorMaterializer: ActorMaterializer) extends Actor {
 
-  import FlickrPhotoRetriever._
-  import context.dispatcher
+  import FlickrPhotos._
+  import context.system
 
   lazy val photoSaver = new PhotoSaver(flickrContext)
 
@@ -43,19 +43,21 @@ class FlickrPhotoRetriever(flickrContext: FlickrContext, implicit val actorMater
         .mapAsync(2)(page => Future.successful {
           val searchParameters = new SearchParameters
           searchParameters.setUserId(userId)
+          searchParameters.setExtras(Set("original_format").asJava)
           photosInterface.search(searchParameters, pageSize, page)
         })
         .mapConcat(photoList => photoList.asScala.toList)
         //        .throttle(10, 1.seconds, 2, ThrottleMode.shaping)
         .map(photo => {
         FlickrPhoto(
+          photo,
           photo.getId,
           photo.getTitle,
           Option(photo.getDescription),
           photo.getOriginalFormat
         )
       })
-        .mapAsync(5)(p => {
+        .mapAsync(1)(p => {
           photoSaver.savePhoto(p)
         })
         .runWith(Sink.ignore)

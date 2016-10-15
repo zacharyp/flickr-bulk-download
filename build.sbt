@@ -24,6 +24,7 @@ lazy val flickrDownloader = project.in(file("."))
   .settings(libraryDependencies ++=
     Akka ++ Seq(
       "com.typesafe" % "config" % "1.3.1",
+      "org.apache.commons" % "commons-io" % "1.3.2",
       "org.json4s" %% "json4s-jackson" % "3.3.0",
       "org.json4s" %% "json4s-native" % "3.3.0",
       "com.flickr4java" % "flickr4java" % "2.16"

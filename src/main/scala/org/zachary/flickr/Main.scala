@@ -14,11 +14,11 @@ class Main {
   lazy implicit val actorMaterializer = ActorMaterializer()
 
   def start(): Unit = {
-    val flickrContext = FlickrContext.getFlickrContext
+    val flickrContext = FlickrContext()
 
     val fpr = actorSystem.actorOf(
-      Props(classOf[FlickrPhotoRetriever], flickrContext, actorMaterializer), "FlickrPhotoRetriever")
+      Props(classOf[FlickrPhotos], flickrContext, actorMaterializer), "FlickrPhotoRetriever")
 
-    fpr ! FlickrPhotoRetriever.RetrieveAll
+    fpr ! FlickrPhotos.RetrieveAll
   }
 }

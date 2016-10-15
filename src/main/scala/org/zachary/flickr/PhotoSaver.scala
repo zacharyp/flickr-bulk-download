@@ -9,17 +9,40 @@ import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{Sink, Source}
 import com.flickr4java.flickr.photos.{PhotoAllContext, Size}
 import org.apache.commons.io.IOUtils
-import org.json4s.JsonDSL._
 import org.json4s._
-import org.json4s.jackson.JsonMethods._
 import org.json4s.jackson.Serialization.write
 
-import scala.concurrent.Future
 import scala.collection.JavaConverters._
+import scala.concurrent.Future
 import scala.util.control.NonFatal
+
+object PhotoSaver {
+
+  object PhotoJson {
+    def apply(flickrPhoto: FlickrPhoto): PhotoJson = {
+      PhotoJson(
+        flickrPhoto.id,
+        flickrPhoto.title,
+        flickrPhoto.description,
+        flickrPhoto.tags,
+        flickrPhoto.originalFormat
+      )
+    }
+  }
+
+  case class PhotoJson(
+    id: String,
+    title: String,
+    description: String,
+    tags: List[String],
+    originalFormat: String
+  )
+
+}
 
 class PhotoSaver(flickrContext: FlickrContext)(implicit val actorM: ActorMaterializer, actorSystem: ActorSystem) {
 
+  import PhotoSaver._
   import actorSystem.dispatcher
 
   implicit val formats = DefaultFormats
@@ -29,9 +52,6 @@ class PhotoSaver(flickrContext: FlickrContext)(implicit val actorM: ActorMateria
   private val logger: LoggingAdapter = Logging.getLogger(actorSystem, this)
 
   def savePhoto(photo: FlickrPhoto): Future[FlickrPhoto] = {
-
-    val photoJson: String = write(photo)
-    println(s"$photoJson")
 
     Source.single(photo)
       .mapAsync(1)(p => {
@@ -57,7 +77,11 @@ class PhotoSaver(flickrContext: FlickrContext)(implicit val actorM: ActorMateria
             val imageName: String = s"${photo.id}.${photo.originalFormat}"
             val path: Path = Paths.get(flickrContext.directory, setTitle, imageName)
             Files.write(path, byteArray)
-            println(s"wrote to path: ${path.toString}")
+            println(s"Wrote image to: ${path.toString}")
+
+            val jsonPath: Path = Paths.get(flickrContext.directory, setTitle, imageName + ".json")
+            Files.write(jsonPath, write(PhotoJson(photo)).getBytes)
+            println(s"Wrote image meta data to: ${jsonPath.toString}")
           } catch {
             case NonFatal(ex) => logger.warning(ex.getMessage, ex)
           }

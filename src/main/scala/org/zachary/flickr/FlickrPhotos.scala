@@ -43,7 +43,7 @@ class FlickrPhotos(flickrContext: FlickrContext, implicit val actorMaterializer:
         .mapAsync(2)(page => Future.successful {
           val searchParameters = new SearchParameters
           searchParameters.setUserId(userId)
-          searchParameters.setExtras(Set("original_format").asJava)
+          searchParameters.setExtras(Set("original_format", "tags").asJava)
           photosInterface.search(searchParameters, pageSize, page)
         })
         .mapConcat(photoList => photoList.asScala.toList)
@@ -53,7 +53,8 @@ class FlickrPhotos(flickrContext: FlickrContext, implicit val actorMaterializer:
           photo,
           photo.getId,
           photo.getTitle,
-          Option(photo.getDescription),
+          Option(photo.getDescription).getOrElse(""),
+          photo.getTags.asScala.toList.map(_.getValue),
           photo.getOriginalFormat
         )
       })

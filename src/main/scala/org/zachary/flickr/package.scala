@@ -8,8 +8,8 @@ package object flickr {
     photo: Photo,
     id: String,
     title: String,
-    description: Option[String],
-    originalFormat: String,
-    photoContent: Option[Array[Byte]] = None
+    description: String,
+    tags: List[String],
+    originalFormat: String
   )
 }

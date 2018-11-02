@@ -26,3 +26,6 @@ To run the program, type at the prompt:
 
 - `sbt run`
 
+To run the program with the required varaible set, they can be set on the command line instead, changing the FOOBAR values for your key and secrets values, and the save directory to your save directory:
+
+- `sbt -DLOCAL_SAVE_DIR=/Users/zachary/Pictures/flickr-download -DFLICKR_KEY=FOOBAR -DFLICKR_SECRET=FOOBAR run`
